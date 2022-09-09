@@ -128,11 +128,12 @@ def pregunta_05():
         minmax = []
         for fila in data:
             if fila[0] == letra:
-                minmax.append(fila[1])
+                minmax.append(int(fila[1]))
         minmax = sorted(minmax)
         r.append((letra,minmax[-1],minmax[0]))
         
     return sorted(r, key = lambda x: x[0])
+
 
 def pregunta_06():
     """
