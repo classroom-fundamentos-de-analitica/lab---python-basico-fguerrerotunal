@@ -227,7 +227,8 @@ def pregunta_08():
     """
     r = pregunta_07()
 
-    return list(map(lambda element: (element[0],list(set(element[1]))), r))
+    return list(map(lambda element: (element[0],sorted(list(set(element[1])))), r))
+
 
 def pregunta_09():
     """
