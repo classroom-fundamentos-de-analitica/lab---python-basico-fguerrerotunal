@@ -12,6 +12,13 @@ Utilice el archivo `data.csv` para resolver las preguntas.
 
 """
 
+with open("./data.csv", "r") as file:
+    data = file.readlines()
+
+#limpieza
+data = [line.replace("\n", "") for line in data]
+data = [line.split("	") for line in data]
+
 
 def pregunta_01():
     """
@@ -20,8 +27,10 @@ def pregunta_01():
     Rta/
     214
 
-    """
-    return
+    """ 
+    l_suma = [int(x[1]) for x in data]
+    
+    return sum(l_suma)
 
 
 def pregunta_02():
@@ -39,7 +48,11 @@ def pregunta_02():
     ]
 
     """
-    return
+    letrasdata = [fila[0] for fila in data]
+    letras = set(letrasdata)
+    conteo = [(letra, letrasdata.count(letra)) for letra in letras]
+    
+    return sorted(conteo, key=lambda x: x[0])
 
 
 def pregunta_03():
@@ -57,7 +70,11 @@ def pregunta_03():
     ]
 
     """
-    return
+    conteo = {}
+    for fila in data:
+        conteo[fila[0]] = conteo.get(fila[0], 0) + int(fila[1])
+        
+    return sorted(list(conteo.items()), key = lambda x: x[0])
 
 
 def pregunta_04():
@@ -82,8 +99,12 @@ def pregunta_04():
     ]
 
     """
-    return
-
+    meses = {}
+    for fila in data:
+        mes = fila[2].split("-")[1]
+        meses[mes] = meses.get(mes, 0) + 1
+    
+    return sorted(list(meses.items()), key = lambda x: x[0])
 
 def pregunta_05():
     """
@@ -100,7 +121,18 @@ def pregunta_05():
     ]
 
     """
-    return
+    
+    letras = set([fila[0] for fila in data])
+    r = []
+    for letra in letras:
+        minmax = []
+        for fila in data:
+            if fila[0] == letra:
+                minmax.append(int(fila[1]))
+        minmax = sorted(minmax)
+        r.append((letra,minmax[-1],minmax[0]))
+        
+    return sorted(r, key = lambda x: x[0])
 
 
 def pregunta_06():
@@ -125,7 +157,21 @@ def pregunta_06():
     ]
 
     """
-    return
+    claves = []
+    for fila in data:
+        cosa = fila[4].split(",")
+        for i in cosa:
+            i = i.split(":")
+            claves.append((i[0], i[1]))
+            
+    claves = sorted(claves, key = lambda x: x[0])
+    minmax = {}
+    for clave in claves:
+        minmax[clave[0]] = sorted(minmax.get(clave[0], []) + [int(clave[1])])
+
+    r = [(clave, val[0], val[-1]) for clave,val in minmax.items()]
+    
+    return r
 
 
 def pregunta_07():
@@ -149,7 +195,12 @@ def pregunta_07():
     ]
 
     """
-    return
+    conteo = {}
+    for fila in data:
+        num = int(fila[1])
+        conteo[num] = conteo.get(num, []) + [fila[0]]
+        
+    return sorted(list(conteo.items()), key = lambda x: x[0])
 
 
 def pregunta_08():
@@ -174,7 +225,9 @@ def pregunta_08():
     ]
 
     """
-    return
+    r = pregunta_07()
+
+    return list(map(lambda element: (element[0],sorted(list(set(element[1])))), r))
 
 
 def pregunta_09():
@@ -197,8 +250,20 @@ def pregunta_09():
     }
 
     """
-    return
-
+    
+    claves = []
+    for fila in data:
+        cosa = fila[4].split(",")
+        for i in cosa:
+            i = i.split(":")
+            claves.append((i[0], i[1]))
+            
+    claves = sorted(claves, key = lambda x: x[0])
+    conteo = {}        
+    for clave in claves:    
+        conteo[clave[0]] = conteo.get(clave[0], 0) + 1
+            
+    return conteo
 
 def pregunta_10():
     """
@@ -218,8 +283,10 @@ def pregunta_10():
 
 
     """
-    return
-
+    
+    r = [(fila[0], len(fila[3].split(",")), len(fila[4].split(","))) for fila in data]
+    
+    return r
 
 def pregunta_11():
     """
@@ -239,7 +306,13 @@ def pregunta_11():
 
 
     """
-    return
+    conteo = {}
+    for fila in data:
+        letras = fila[3].split(",")
+        for letra in letras:
+            conteo[letra] = conteo.get(letra, 0) + int(fila[1])
+        
+    return dict(sorted(conteo.items()))
 
 
 def pregunta_12():
@@ -257,4 +330,14 @@ def pregunta_12():
     }
 
     """
-    return
+    conteo = {}
+    for fila in data:
+        suma =[]
+        cosa = fila[4].split(",")
+        for i in cosa:
+            i = i.split(":")
+            suma.append(int(i[1]))
+        conteo[fila[0]] = conteo.get(fila[0], 0) + sum(suma)
+    
+    return dict(sorted(conteo.items()))
+   
